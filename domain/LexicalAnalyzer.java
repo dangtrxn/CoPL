@@ -21,19 +21,19 @@ public class LexicalAnalyzer {
      * @return current char as a token
      */
     public Token get_token() throws InvalidTokenException {
-        //skip all whitespace
-        while (col_index < source.length() && Character.isWhitespace(source.charAt(col_index))) {
-            col_index++;
-        }
-
-        //if all characters consumed, return EOS
-        if (col_index >= source.length()) {
+        //return EOS if at end of line
+        if (col_index >= source.length()){
             return new Token(TokenType.EOS, "", row_index++, col_index);
         }
 
         //get current char
         char current = source.charAt(col_index);
 
+        //skip all white space
+        while (col_index < source.length() && Character.isWhitespace(current)){
+            col_index++;
+            current = source.charAt(col_index);
+        }
 
         //identify parenthesis
         if (isParenthesis(current)){

@@ -1,6 +1,6 @@
 package domain;
 /**
- * class for a lexical analyzer which contains information, get_token method, and additional helper methods
+ * class for a lexical analyzer which contains information, get methods, and additional helper methods
  */
 public class Token {
     private TokenType type;
@@ -9,7 +9,7 @@ public class Token {
     private int col;
 
     /**
-     * constructor for lexical analyzer, takes in source string to analyze
+     * constructor for token, takes in source string to analyze
      * @param type - TokenType
      * @param lexeme - subject of token
      * @param row - token row
