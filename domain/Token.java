@@ -1,4 +1,7 @@
 package domain;
+
+import globalexceptions.InvalidTokenException;
+
 /**
  * class for a lexical analyzer which contains information, get methods, and additional helper methods
  */
@@ -14,8 +17,18 @@ public class Token {
      * @param lexeme - subject of token
      * @param row - token row
      * @param col - token col
+     * @throws InvalidTokenException if any constructor params are empty
      */
     public Token(TokenType type, String lexeme, int row, int col){
+        if (type == null) {
+            throw new InvalidTokenException("Token type cannot be null.");
+        }
+        if (lexeme == null) {
+            throw new InvalidTokenException("Lexeme cannot be null.");
+        }
+        if (row < 0 || col < 0) {
+            throw new InvalidTokenException("Row and column indices must be non-negative.");
+        }
         this.type = type;
         this.lexeme = lexeme;
         this.row = row;

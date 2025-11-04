@@ -26,14 +26,18 @@ public class LexicalAnalyzer {
             return new Token(TokenType.EOS, "", row_index++, col_index);
         }
 
+        //skip all whitespace
+        while (col_index < source.length() && Character.isWhitespace(source.charAt(col_index))) {
+            col_index++;
+        }
+
+        //check again for end-of-line
+        if (col_index >= source.length()) {
+            return new Token(TokenType.EOS, "", row_index++, col_index);
+        }
+
         //get current char
         char current = source.charAt(col_index);
-
-        //skip all white space
-        while (col_index < source.length() && Character.isWhitespace(current)){
-            col_index++;
-            current = source.charAt(col_index);
-        }
 
         //identify parenthesis
         if (isParenthesis(current)){
@@ -53,28 +57,27 @@ public class LexicalAnalyzer {
 
         //identify operators
         if (isOperator(current)){
+            TokenType type;
             switch (current){
                 case '+':
-                    //return + token
-                    Token add = new Token(TokenType.ADDITION, "+", row_index, col_index);
-                    col_index++;
-                    return add;
+                    type = TokenType.ADDITION;
+                    break;
                 case '-':
-                    //return - token
-                    Token sub = new Token(TokenType.SUBTRACTION, "-", row_index, col_index);
-                    col_index++;
-                    return sub;
+                    type = TokenType.SUBTRACTION;
+                    break;
                 case '*':
-                    //return * token
-                    Token mult = new Token(TokenType.MULTIPLICATION, "*", row_index, col_index);
-                    col_index++;
-                    return mult;
+                    type = TokenType.MULTIPLICATION;
+                    break;
                 case '/':
-                    //return / token
-                    Token div = new Token(TokenType.DIVISION, "/", row_index, col_index);
-                    col_index++;
-                    return div;
+                    type = TokenType.DIVISION;
+                    break;
+                default:
+                    throw new InvalidTokenException("Unknown operator: " + current);
             }
+
+            Token token = new Token(type, Character.toString(current), row_index,col_index);
+            col_index++;
+            return token;
         }
 
         //identify digits
